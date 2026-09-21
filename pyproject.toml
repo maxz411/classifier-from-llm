@@ -1,0 +1,33 @@
+[project]
+name = "optscore"
+version = "0.1.0"
+description = "Turn a causal LM into a Jev-style decision model: score a fixed option set in one forward pass, then normalize."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Max Zhang", email = "06max.zhang@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "torch>=2.6",
+    "transformers>=5.0",
+    "datasets>=3.0",
+    "numpy>=2.0",
+    "accelerate>=1.0",
+    "peft>=0.15",
+    "scikit-learn>=1.5",
+    "requests>=2.32",
+    "huggingface_hub>=0.30",
+    "btzsc>=0.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["uv_build>=0.11.7,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

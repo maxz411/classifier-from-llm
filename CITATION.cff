@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "Please cite the paper when using this software."
+type: software
+title: "optscore: Any Language Model Is a Classifier"
+version: 0.1.0
+authors:
+  - family-names: Zhang
+    given-names: Max
+license: Apache-2.0
+preferred-citation:
+  type: article
+  title: "Any Language Model Is a Classifier: Calibrated One-Pass Decisions over Arbitrary Label Sets from Pretrained LLMs"
+  authors:
+    - family-names: Zhang
+      given-names: Max
+  year: 2026
