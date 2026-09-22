@@ -56,8 +56,10 @@ constrained decoding and JSON generation) and `scripts/btzsc_eval.py` (the BTZSC
 classification benchmark; `scripts/fetch_btzsc_leaderboard.py` downloads its leaderboard).
 `src/optscore/bench/` holds their shared code. The per-example evaluation reports, the
 prompted baselines' replies, the latency sweeps and the leaderboard snapshot behind every
-number in the paper are released as a separate archive; extract it at the repository root
-to restore `results/`.
+number in the paper are in
+[`paper-results.tar.gz`](https://github.com/maxz411/classifier-from-llm/releases/download/v0.1.0/paper-results.tar.gz)
+(108 MB, [release v0.1.0](https://github.com/maxz411/classifier-from-llm/releases/tag/v0.1.0));
+extract it at the repository root to restore `results/`.
 
 ## Tests
 
