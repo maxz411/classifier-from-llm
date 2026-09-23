@@ -28,14 +28,17 @@ uv run scripts/evaluate.py --model Qwen/Qwen3-1.7B-Base --adapter runs/1.7b-scal
 
 ## Inference
 
-After training:
+After training, or with a released adapter (the paper's adapters are on Hugging Face,
+named by base model: [pack-readout-classifiers-6ab3e85ca7a8152d83c786eb](https://huggingface.co/collections/maxz411/pack-readout-classifiers-6ab3e85ca7a8152d83c786eb)):
 
 ```python
+from huggingface_hub import snapshot_download
 from packreadout import load_model, score_examples
 from packreadout.train import load_adapter
 
 model, tokenizer = load_model("Qwen/Qwen3-1.7B-Base")
-model, readout, head = load_adapter(model, "runs/1.7b-scalar")
+adapter = snapshot_download("maxz411/Qwen3-1.7B-packreadout")  # or a directory written by scripts/train.py
+model, readout, head = load_adapter(model, adapter)
 labels = ["positive", "negative", "neutral"]
 prompt = "Review: The food was excellent.\nLabels: positive, negative, neutral\nLabel:"
 result = score_examples(model, tokenizer, [prompt], [labels], readout=readout, head=head)[0]
@@ -72,7 +75,8 @@ uv run pytest    # downloads Qwen3-0.6B-Base on first use
 
 The code is licensed under [Apache-2.0](LICENSE). Base models and datasets retain
 their own terms; see [DATA.md](DATA.md). Training downloads data from its original
-sources. Model weights are not bundled with the code. Citation metadata is in
+sources. The trained adapters are released separately on Hugging Face under CC BY-NC 4.0
+([collection](https://huggingface.co/collections/maxz411/pack-readout-classifiers-6ab3e85ca7a8152d83c786eb)). Citation metadata is in
 [CITATION.cff](CITATION.cff).
 
 Claude Code and OpenAI Codex assisted with training code, substantial manuscript
