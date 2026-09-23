@@ -12,8 +12,8 @@ import torch
 from btzsc import BaseModel
 from datasets import load_dataset
 
-from optscore.formatting import classify_prompt
-from optscore.scoring import score_examples
+from packreadout.formatting import classify_prompt
+from packreadout.scoring import score_examples
 
 INSTRUCTION = "Pick the label that describes the text."
 

@@ -11,7 +11,7 @@ the same quantity live here:
 
 * :func:`score_examples` and :func:`score_options` (the default): one sequence
   ``prompt ++ opt_1 ++ ... ++ opt_n`` with a block attention mask, see
-  :mod:`optscore.packing`. One forward of ``P + sum(L_i)`` tokens. A model trained
+  :mod:`packreadout.packing`. One forward of ``P + sum(L_i)`` tokens. A model trained
   with a scalar head is scored by the same functions (``readout="scalar"``).
 * :func:`score_options_naive`: every ``prompt + option`` is its own full sequence.
   The reference implementation the packed path is tested against.
@@ -28,10 +28,10 @@ import numpy as np
 import torch
 from transformers import PreTrainedModel, PreTrainedTokenizerBase
 
-from optscore.formatting import DEFAULT_FORMAT, OptionFormat
-from optscore.gptoss.model import decoder_of, logprobs_of_targets
-from optscore.gptoss.packing import option_token_logprobs, packed_forward, readout_logits
-from optscore.normalize import normalized_scores, to_probs
+from packreadout.formatting import DEFAULT_FORMAT, OptionFormat
+from packreadout.gptoss.model import decoder_of, logprobs_of_targets
+from packreadout.gptoss.packing import option_token_logprobs, packed_forward, readout_logits
+from packreadout.normalize import normalized_scores, to_probs
 
 
 @dataclass

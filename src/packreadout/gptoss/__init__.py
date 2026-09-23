@@ -1,6 +1,6 @@
 """The method implemented for gpt-oss, end to end.
 
-The four files here are complete copies of ``optscore/model.py``, ``packing.py``, ``scoring.py``
+The four files here are complete copies of ``packreadout/model.py``, ``packing.py``, ``scoring.py``
 and ``train.py``, so that either implementation can be read on its own. Every line that differs
 from the main one is marked ``gpt-oss:``. gpt-oss differs from a plain dense decoder in four ways:
 
@@ -17,6 +17,6 @@ The scripts pick this implementation for any model whose name contains ``gpt-oss
 plain dense model it gives the same numbers as the main one (tested).
 """
 
-from optscore.gptoss import model, packing, scoring, train
+from packreadout.gptoss import model, packing, scoring, train
 
 __all__ = ["model", "packing", "scoring", "train"]

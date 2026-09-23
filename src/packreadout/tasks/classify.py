@@ -7,8 +7,8 @@ from dataclasses import dataclass
 
 from datasets import load_dataset
 
-from optscore.formatting import classify_prompt
-from optscore.tasks.base import Example, register, take
+from packreadout.formatting import classify_prompt
+from packreadout.tasks.base import Example, register, take
 
 MAX_TEXT_CHARS = 1500  # long reviews are cut; enough for the label, keeps prompts short
 

@@ -8,9 +8,9 @@ import numpy as np
 import torch
 from transformers import PreTrainedModel, PreTrainedTokenizerBase
 
-from optscore.formatting import DEFAULT_FORMAT, OptionFormat
-from optscore.model import decoder_of, logprobs_of_targets
-from optscore.scoring import ScoreResult, encode_options, make_result
+from packreadout.formatting import DEFAULT_FORMAT, OptionFormat
+from packreadout.model import decoder_of, logprobs_of_targets
+from packreadout.scoring import ScoreResult, encode_options, make_result
 
 
 @torch.no_grad()

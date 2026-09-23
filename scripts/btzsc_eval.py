@@ -10,9 +10,9 @@ import argparse
 import json
 from pathlib import Path
 
-import optscore
-import optscore.gptoss
-from optscore.bench.btzsc_adapter import OptionScoringModel, evaluate_btzsc
+import packreadout
+import packreadout.gptoss
+from packreadout.bench.btzsc_adapter import OptionScoringModel, evaluate_btzsc
 
 
 def main():
@@ -24,7 +24,7 @@ def main():
     ap.add_argument("--out", default=None, help="default: results/btzsc/<model or run name>.json")
     args = ap.parse_args()
 
-    impl = optscore.gptoss if "gpt-oss" in args.model else optscore  # two complete implementations of the method
+    impl = packreadout.gptoss if "gpt-oss" in args.model else packreadout  # two complete implementations of the method
     model, tok = impl.model.load_model(args.model)
     readout, head, name = "lm_head", None, args.model.split("/")[-1]
     if args.adapter:

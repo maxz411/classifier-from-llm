@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable
 
-from optscore.formatting import DEFAULT_FORMAT, OptionFormat
+from packreadout.formatting import DEFAULT_FORMAT, OptionFormat
 
 Loader = Callable[[str, int | None], list["Example"]]  # (split, limit) -> examples
 

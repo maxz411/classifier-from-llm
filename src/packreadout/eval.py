@@ -3,7 +3,7 @@
 A report (one JSON file per task) has ``by_norm[norm]["t1"]`` and
 ``by_norm[norm]["temp_scaled"]``, each a dict of the metrics below at temperature 1 and
 after cross-fitted temperature scaling, plus ``per_example`` with every example's gold
-index and per-option scores. ``norm`` is one of :data:`optscore.normalize.NORMS`, or
+index and per-option scores. ``norm`` is one of :data:`packreadout.normalize.NORMS`, or
 ``raw+bc`` for batch calibration.
 """
 
@@ -17,11 +17,11 @@ import numpy as np
 import torch
 from sklearn.metrics import f1_score, roc_auc_score
 
-from optscore.formatting import symbol_prompt
-from optscore.normalize import fit_temperature, log_softmax, to_probs
-from optscore.scoring import score_examples
-from optscore.tasks.base import Example, Task
-from optscore.tasks.paraphrase import paraphrase_examples
+from packreadout.formatting import symbol_prompt
+from packreadout.normalize import fit_temperature, log_softmax, to_probs
+from packreadout.scoring import score_examples
+from packreadout.tasks.base import Example, Task
+from packreadout.tasks.paraphrase import paraphrase_examples
 
 
 def ece(conf: np.ndarray, correct: np.ndarray, n_bins: int = 15) -> float:
@@ -115,7 +115,7 @@ def evaluate(
     readout: str = "lm_head",
     head: torch.nn.Linear | None = None,
     uncond: bool = False,
-    score=score_examples,  # optscore.gptoss.scoring.score_examples for a gpt-oss model
+    score=score_examples,  # packreadout.gptoss.scoring.score_examples for a gpt-oss model
 ) -> dict:
     """Score the task's test examples and compute every metric for every applicable normalization."""
     examples = task.load("test", limit)

@@ -20,10 +20,10 @@ import numpy as np
 import torch
 from sklearn.metrics import f1_score
 
-from optscore.bench.generate_baseline import Trie, _prefill, _step
-from optscore.bench.prompting import score_replies, user_message
-from optscore.model import load_model
-from optscore.tasks import get_task, tasks_with_role
+from packreadout.bench.generate_baseline import Trie, _prefill, _step
+from packreadout.bench.prompting import score_replies, user_message
+from packreadout.model import load_model
+from packreadout.tasks import get_task, tasks_with_role
 
 
 def chat_prompt(tok, prompt: str) -> str:

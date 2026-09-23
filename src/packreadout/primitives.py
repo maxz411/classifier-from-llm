@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from optscore.scoring import score_options
+from packreadout.scoring import score_options
 
 
 def choice(model, tok, state: str, question: str, options: list[str], temperature: float = 1.0) -> dict[str, float]:

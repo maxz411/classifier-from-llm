@@ -18,8 +18,8 @@ from dataclasses import dataclass
 
 import torch
 
-from optscore.formatting import DEFAULT_FORMAT, OptionFormat
-from optscore.scoring import encode_options
+from packreadout.formatting import DEFAULT_FORMAT, OptionFormat
+from packreadout.scoring import encode_options
 
 
 @dataclass

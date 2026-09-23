@@ -1,7 +1,7 @@
-"""Fine-tune the option-set distribution directly.
+"""Fine-tune the option-set distribution directly (gpt-oss implementation).
 
 For every training example the packed forward gives one logit per option
-(:func:`optscore.packing.readout_logits`): ``s_i = sum_t log P(opt_i[t] | prompt, opt_i[:t])``
+(:func:`packreadout.packing.readout_logits`): ``s_i = sum_t log P(opt_i[t] | prompt, opt_i[:t])``
 with the LM-head readout, or ``s_i = w . h_i`` with ``h_i`` the hidden state at the
 option's last token (scalar-head readout). The objective is the cross-entropy of the
 gold option under ``softmax(s)``: it trains exactly the distribution used at inference
@@ -36,10 +36,10 @@ from pathlib import Path
 import torch
 from peft import LoraConfig, PeftModel, get_peft_model
 
-from optscore.formatting import DEFAULT_FORMAT, OptionFormat
-from optscore.packing import packed_forward, readout_logits
-from optscore.scoring import encode_options
-from optscore.tasks.base import Example, Task
+from packreadout.formatting import DEFAULT_FORMAT, OptionFormat
+from packreadout.gptoss.packing import packed_forward, readout_logits
+from packreadout.gptoss.scoring import encode_options
+from packreadout.tasks.base import Example, Task
 
 
 @dataclass
@@ -117,7 +117,9 @@ def add_lora(model, rank: int):
         lora_alpha=2 * rank,
         lora_dropout=0.0,
         bias="none",
-        target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+        target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
+        # gpt-oss: the experts are one fused parameter per layer, adapted through target_parameters
+        target_parameters=["mlp.experts.gate_up_proj", "mlp.experts.down_proj"],
     )
     return get_peft_model(model, config)
 

@@ -9,10 +9,10 @@ from dataclasses import dataclass
 import numpy as np
 import torch
 
-from optscore.bench.cached_baseline import score_options_cached
-from optscore.bench.generate_baseline import constrained_generate, json_generate
-from optscore.formatting import DEFAULT_FORMAT, OptionFormat, classify_prompt
-from optscore.scoring import score_options, score_options_naive
+from packreadout.bench.cached_baseline import score_options_cached
+from packreadout.bench.generate_baseline import constrained_generate, json_generate
+from packreadout.formatting import DEFAULT_FORMAT, OptionFormat, classify_prompt
+from packreadout.scoring import score_options, score_options_naive
 
 
 def _sync(device: torch.device):
@@ -122,7 +122,7 @@ def bench_case(
 
 def label_pool() -> list[str]:
     """Real label names from the intent datasets, enough for a 255-option sweep."""
-    from optscore.tasks import get_task
+    from packreadout.tasks import get_task
 
     names: list[str] = []
     for task in ("banking77", "clinc150", "massive"):
@@ -136,7 +136,7 @@ def sample_texts(k: int = 20) -> list[str]:
     """The benchmark's inputs: k customer queries from the Banking77 test set."""
     from datasets import load_dataset
 
-    from optscore.tasks.classify import SPECS
+    from packreadout.tasks.classify import SPECS
 
     spec = SPECS["banking77"][1]
     ds = load_dataset(spec.dataset, spec.config, split=spec.splits[1])

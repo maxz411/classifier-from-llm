@@ -1,4 +1,4 @@
-"""Packed scoring: all options of one prompt in a single forward pass.
+"""Packed scoring: all options of one prompt in a single forward pass (gpt-oss implementation).
 
 The packed sequence is ``prompt ++ opt_1 ++ opt_2 ++ ... ++ opt_n``. Two things make
 the options independent of each other, so the result equals scoring each option on
@@ -25,7 +25,7 @@ from dataclasses import dataclass
 import torch
 from transformers import PreTrainedModel, PreTrainedTokenizerBase
 
-from optscore.model import decoder_of, logprobs_of_targets
+from packreadout.gptoss.model import decoder_of, logprobs_of_targets
 
 Item = tuple[list[int], list[list[int]]]  # (prompt_ids, option_ids per option)
 
@@ -72,6 +72,14 @@ def block_attention_mask(segment_ids: torch.Tensor, valid: torch.Tensor) -> torc
     return (allowed | ((~valid)[:, :, None] & first_key))[:, None]
 
 
+def sliding_window_mask(position_ids: torch.Tensor, window: int) -> torch.Tensor:
+    """gpt-oss: boolean ``(B, 1, T, T)``, True where the key is within ``window`` positions before the
+    query. Measured on the position ids, which restart after the prompt for every option, so an
+    option token sees the same prompt tokens it would see in a separate pass over prompt + option."""
+    q, k = position_ids[:, :, None], position_ids[:, None, :]
+    return ((q - k) < window)[:, None]
+
+
 def packed_forward(
     model: PreTrainedModel, tok: PreTrainedTokenizerBase, items: list[Item]
 ) -> tuple[torch.Tensor, list[PackedSequence]]:
@@ -94,6 +102,14 @@ def packed_forward(
         seg[r, :n] = torch.tensor(p.segment_ids, device=device)
         valid[r, :n] = True
     mask = block_attention_mask(seg, valid)
+    config = model.config
+    if "sliding_attention" in (getattr(config, "layer_types", None) or []):
+        # gpt-oss: one mask per layer type; the sliding layers also keep the window
+        mask = {"full_attention": mask, "sliding_attention": mask & sliding_window_mask(pos, config.sliding_window)}
+    if config._attn_implementation == "eager":
+        # gpt-oss: eager attention adds the mask to the logits, so allowed is 0 and forbidden is -inf
+        as_float = lambda m: torch.where(m, 0.0, torch.finfo(model.dtype).min).to(model.dtype)  # noqa: E731
+        mask = {kind: as_float(m) for kind, m in mask.items()} if isinstance(mask, dict) else as_float(mask)
     hidden = decoder_of(model)(input_ids=ids, attention_mask=mask, position_ids=pos).last_hidden_state
     return hidden, packed
 

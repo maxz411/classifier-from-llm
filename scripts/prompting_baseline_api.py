@@ -21,8 +21,8 @@ from pathlib import Path
 
 import requests
 
-from optscore.bench.prompting import score_replies, user_message
-from optscore.tasks import get_task, tasks_with_role
+from packreadout.bench.prompting import score_replies, user_message
+from packreadout.tasks import get_task, tasks_with_role
 
 URL = "https://ai-gateway.vercel.sh/v1/chat/completions"
 MODELS_URL = "https://ai-gateway.vercel.sh/v1/models"

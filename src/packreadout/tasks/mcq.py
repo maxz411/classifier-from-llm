@@ -7,8 +7,8 @@ import re
 
 from datasets import load_dataset
 
-from optscore.formatting import LM_EVAL_FORMAT, mcq_prompt
-from optscore.tasks.base import Example, register, take
+from packreadout.formatting import LM_EVAL_FORMAT, mcq_prompt
+from packreadout.tasks.base import Example, register, take
 
 YES_NO = ["yes", "no"]
 

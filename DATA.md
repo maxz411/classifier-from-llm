@@ -45,4 +45,4 @@ SciQ is marked CC BY-NC 3.0, and several other training sources have custom or
 unspecified terms. The code's Apache-2.0 license does not grant rights to these
 datasets or to model weights trained on them. No model weights are included.
 
-Task configurations, split selection, truncation, label rendering and single-label filtering are defined in `src/optscore/tasks/`.
+Task configurations, split selection, truncation, label rendering and single-label filtering are defined in `src/packreadout/tasks/`.

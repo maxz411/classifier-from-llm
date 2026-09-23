@@ -14,11 +14,11 @@ from pathlib import Path
 
 import torch
 
-import optscore
-import optscore.gptoss
-from optscore.eval import evaluate, save_report, summary_table
-from optscore.tasks import get_task, tasks_with_role
-from optscore.train import TrainConfig
+import packreadout
+import packreadout.gptoss
+from packreadout.eval import evaluate, save_report, summary_table
+from packreadout.tasks import get_task, tasks_with_role
+from packreadout.train import TrainConfig
 
 
 def main():
@@ -44,7 +44,7 @@ def main():
     ap.add_argument("--gradient-checkpointing", action="store_true")
     args = ap.parse_args()
     cfg = TrainConfig(**{k: getattr(args, k) for k in TrainConfig.__dataclass_fields__})
-    impl = optscore.gptoss if "gpt-oss" in cfg.model else optscore  # two complete implementations of the method
+    impl = packreadout.gptoss if "gpt-oss" in cfg.model else packreadout  # two complete implementations of the method
 
     model, tok = impl.model.load_model(cfg.model, args.device)
     if args.gradient_checkpointing:

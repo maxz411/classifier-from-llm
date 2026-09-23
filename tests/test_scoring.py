@@ -4,10 +4,10 @@ import numpy as np
 import pytest
 import torch
 
-from optscore import choice, load_model, score, score_examples, score_options, score_options_naive, to_probs, true_false
-from optscore.bench.cached_baseline import score_options_cached
-from optscore.formatting import DEFAULT_FORMAT, LM_EVAL_FORMAT, OptionFormat
-from optscore.normalize import fit_temperature, log_softmax
+from packreadout import choice, load_model, score, score_examples, score_options, score_options_naive, to_probs, true_false
+from packreadout.bench.cached_baseline import score_options_cached
+from packreadout.formatting import DEFAULT_FORMAT, LM_EVAL_FORMAT, OptionFormat
+from packreadout.normalize import fit_temperature, log_softmax
 
 MODEL = os.environ.get("OPTSCORE_TEST_MODEL", "Qwen/Qwen3-0.6B-Base")  # e.g. openai/gpt-oss-20b on a big GPU
 
@@ -58,8 +58,8 @@ def test_bulk_matches_single(lm):
 
 def test_scalar_readout_is_the_same_in_training_and_evaluation(lm):
     """A scalar head scored through score_examples gives the logits option_logits trains on."""
-    from optscore.tasks.base import Example
-    from optscore.train import option_logits
+    from packreadout.tasks.base import Example
+    from packreadout.train import option_logits
 
     model, tok = lm
     torch.manual_seed(0)
@@ -75,8 +75,8 @@ def test_scalar_readout_is_the_same_in_training_and_evaluation(lm):
 
 
 def test_gptoss_implementation_matches_main_on_a_dense_model(lm):
-    """optscore.gptoss is a complete copy for gpt-oss; on a plain decoder it must agree with optscore."""
-    from optscore.gptoss.scoring import score_options as score_options_gptoss
+    """packreadout.gptoss is a complete copy for gpt-oss; on a plain decoder it must agree with packreadout."""
+    from packreadout.gptoss.scoring import score_options as score_options_gptoss
 
     model, tok = lm
     model.config._attn_implementation = "eager"  # the gpt-oss implementation loads models with eager attention
@@ -146,8 +146,8 @@ def test_option_format_renders():
 
 def test_training_objective_moves_probability_to_gold(lm):
     """A few LoRA steps on two examples must raise the gold option's probability."""
-    from optscore.tasks.base import Example
-    from optscore.train import add_lora, loss_fn, option_logits
+    from packreadout.tasks.base import Example
+    from packreadout.train import add_lora, loss_fn, option_logits
 
     model, tok = lm
     examples = [
@@ -178,8 +178,8 @@ def test_training_objective_moves_probability_to_gold(lm):
 
 def test_encode_options_matches_full_joint_tokenization(lm):
     """The cue-line shortcut must give exactly the tokens of tokenizing prompt + option."""
-    from optscore.scoring import encode_options, tokenize_pieces
-    from optscore.tasks import get_task
+    from packreadout.scoring import encode_options, tokenize_pieces
+    from packreadout.tasks import get_task
 
     _, tok = lm
     for name in ["banking77", "sst5", "arc_challenge", "strategyqa", "hellaswag_lmeval"]:

@@ -13,8 +13,8 @@ from pathlib import Path
 
 import torch
 
-from optscore.bench.latency import METHODS, sample_texts, sweep_n_options, sweep_option_length, table
-from optscore.model import load_model
+from packreadout.bench.latency import METHODS, sample_texts, sweep_n_options, sweep_option_length, table
+from packreadout.model import load_model
 
 
 def main():

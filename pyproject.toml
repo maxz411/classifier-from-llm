@@ -1,7 +1,7 @@
 [project]
-name = "optscore"
+name = "packreadout"
 version = "0.1.0"
-description = "Turn a causal LM into a Jev-style decision model: score a fixed option set in one forward pass, then normalize."
+description = "Turn a causal LM into a Jev-style decision model: one pack-readout scores a fixed option set in a single forward pass."
 readme = "README.md"
 license = "Apache-2.0"
 license-files = ["LICENSE"]

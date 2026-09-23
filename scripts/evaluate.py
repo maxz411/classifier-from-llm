@@ -12,10 +12,10 @@ import argparse
 import json
 from pathlib import Path
 
-import optscore
-import optscore.gptoss
-from optscore.eval import evaluate, save_report, summary_table
-from optscore.tasks import get_task, tasks_with_role
+import packreadout
+import packreadout.gptoss
+from packreadout.eval import evaluate, save_report, summary_table
+from packreadout.tasks import get_task, tasks_with_role
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
     ap.add_argument("--out", default=None, help="default: results/<model or run name>/<method>")
     args = ap.parse_args()
 
-    impl = optscore.gptoss if "gpt-oss" in args.model else optscore  # two complete implementations of the method
+    impl = packreadout.gptoss if "gpt-oss" in args.model else packreadout  # two complete implementations of the method
     model, tok = impl.model.load_model(args.model, args.device)
     readout, head, tag = "lm_head", None, args.model.split("/")[-1]
     if args.adapter:

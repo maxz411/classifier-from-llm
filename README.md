@@ -1,4 +1,4 @@
-# optscore
+# packreadout
 
 Turn a pretrained causal language model into a classifier over arbitrary label sets.
 Options share one packed forward pass; a learned scalar head produces the option
@@ -17,7 +17,7 @@ uv sync --locked
 uv run scripts/train.py --model Qwen/Qwen3-1.7B-Base --readout scalar --steps 2000 --out runs/1.7b-scalar
 ```
 
-The default recipe trains on the 18-task mixture defined in `src/optscore/tasks/`
+The default recipe trains on the 18-task mixture defined in `src/packreadout/tasks/`
 and evaluates on the held-out tasks. The output directory contains the LoRA
 adapter, scalar head, training configuration and loss log. Use `--help` for the
 existing training options.
@@ -31,8 +31,8 @@ uv run scripts/evaluate.py --model Qwen/Qwen3-1.7B-Base --adapter runs/1.7b-scal
 After training:
 
 ```python
-from optscore import load_model, score_examples
-from optscore.train import load_adapter
+from packreadout import load_model, score_examples
+from packreadout.train import load_adapter
 
 model, tokenizer = load_model("Qwen/Qwen3-1.7B-Base")
 model, readout, head = load_adapter(model, "runs/1.7b-scalar")
@@ -42,7 +42,7 @@ result = score_examples(model, tokenizer, [prompt], [labels], readout=readout, h
 print(dict(zip(labels, result.probs().tolist())))
 ```
 
-`src/optscore/` contains model loading, packed attention, scoring and training;
+`src/packreadout/` contains model loading, packed attention, scoring and training;
 `tasks/` contains the data loaders. `gptoss/` implements the same method for the
 gpt-oss architecture. The training and evaluation scripts select it automatically.
 
@@ -54,7 +54,7 @@ instruction-tuned model, free and constrained replies), `scripts/prompting_basel
 `scripts/bench_latency.py` (packed scoring against KV replication, one sequence per option,
 constrained decoding and JSON generation) and `scripts/btzsc_eval.py` (the BTZSC zero-shot
 classification benchmark; `scripts/fetch_btzsc_leaderboard.py` downloads its leaderboard).
-`src/optscore/bench/` holds their shared code. The per-example evaluation reports, the
+`src/packreadout/bench/` holds their shared code. The per-example evaluation reports, the
 prompted baselines' replies, the latency sweeps and the leaderboard snapshot behind every
 number in the paper are in
 [`paper-results.tar.gz`](https://github.com/maxz411/classifier-from-llm/releases/download/v0.1.0/paper-results.tar.gz)
